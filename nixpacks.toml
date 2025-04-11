@@ -1,3 +1,8 @@
+[install]
+command = """
+pipx install prosperity3bt
+"""
+
 [start]
 cmd = "gunicorn app:app"
 
