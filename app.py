@@ -24,7 +24,6 @@ def upload_file():
         file = request.files['file']
         round = request.form['round']
 
-        # If the user does not select a file, the browser submits an empty file without a filename.
         if file.filename == '':
             return 'No selected file'
 
@@ -61,7 +60,6 @@ def upload_file():
 
 @app.route('/<path:filename>')
 def serve_file(filename):
-    # prevent directory traversal attacks
     if '..' in filename or filename.startswith('/'):
         abort(400)
     try:
