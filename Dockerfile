@@ -13,7 +13,7 @@ COPY . ./
 
 # Install project dependencies
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pipx install prosperity3bt
+RUN pip install -U prosperity3bt
 
 # Run the web service on container startup.
 CMD ["gunicorn", "app:app"]
