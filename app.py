@@ -46,7 +46,7 @@ def upload_file():
 
             result = subprocess.run(command, capture_output=True, text=True, encoding="utf-8")
 
-            encoded_file_path = urllib.parse.quote(f"http://localhost:5000/{filename}.py.log")
+            encoded_file_path = urllib.parse.quote(f"https://imcprosperityrunner-production.up.railway.app/{filename}.py.log")
             prosperity_url = f"https://jmerle.github.io/imc-prosperity-3-visualizer/?open={encoded_file_path}"
 
             show_tip1 = False
