@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload File</title>
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <label>
+            Round? 0 = tutorial data, 1 = round 1 day 0 data, etc. "all" = all rounds
+            <button id="round-numbers-popup">?</button>
+            <input type="text" name="round">
+        </label>
+        <br>
+        <input type="submit" value="Upload" style="width: 100px; height: 50px; background-color: aqua;">
+    </form>
+    {% if success %}
+        <h3>Output:</h3>
+        <pre class="console">{{ data }}</pre>
+
+        {% if errors %}
+            <h3>Full Log:</h3>
+            <pre class="console error">{{ errors }}</pre>
+        {% endif %}
+
+        <a href="{{ prosperity_url }}" target="_blank">Open in Prosperity Visualizer</a>
+        {% if show_tip1 %}
+            <b>Did some errors occur? If so, did you set the round number?</b>
+        {% endif %}
+    {% endif %}
+    <style>
+        .console {
+            background: #111;
+            color: #0f0;
+            padding: 1em;
+            font-family: monospace;
+            border-radius: 8px;
+            overflow-x: auto;
+            max-height: 400px;
+        }
+
+        .console.error {
+            color: #f66;
+        }
+    </style>
+    <script>
+        document.getElementById("round-numbers-popup").onclick = function() {
+            alert(`🧠 Round Input Guide (for Prosperity Backtester)
+
+                Enter round numbers in the box to control what days to backtest. Here’s how it works:
+
+                ✅ Backtest all days from a round:
+                1
+                Runs all days from round 1.
+
+                ✅ Backtest a specific day from a round:
+                1-0
+                Runs day 0 of round 1.
+
+                ✅ Backtest multiple specific days:
+                1--1 1-0
+                Runs day -1 and day 0 of round 1.
+
+                ✅ Backtest multiple full rounds:
+                1 2
+                Runs all days from rounds 1 and 2.
+
+                ✅ Run everything (all rounds and days):
+                all
+                Runs the entire backtest.
+
+                📝 Input Tips:
+                - Separate multiple entries with spaces.
+                - Use - to specify a specific day (e.g., 2-1 = round 2, day 1).
+                - Use all to run the full backtest.`
+            );
+        }
+    </script>
+    </body>
+</html>
