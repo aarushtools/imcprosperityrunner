@@ -1,5 +1,6 @@
 import hashlib
 import os
+import shutil
 import subprocess
 import tempfile
 import urllib
@@ -13,6 +14,7 @@ CORS(app, resources={r"/*": {"origins": "https://jmerle.github.io"}})
 
 app.config['UPLOAD_FOLDER'] = "/tmp/uploads"
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+shutil.copy2("uploads/datamodel.py", os.path.join(app.config["UPLOAD_FOLDER"], "datamodel.py"))
 app.secret_key = os.environ.get('SECRET_KEY', 'dev-key')  # Change in production
 PASSWORD = os.environ.get('PASSWORD')
 
