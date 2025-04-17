@@ -11,7 +11,8 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "https://jmerle.github.io"}})
 
-app.config['UPLOAD_FOLDER'] = "uploads"
+app.config['UPLOAD_FOLDER'] = "/tmp/uploads"
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 app.secret_key = os.environ.get('SECRET_KEY', 'dev-key')  # Change in production
 PASSWORD = os.environ.get('PASSWORD')
 
