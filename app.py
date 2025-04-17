@@ -79,5 +79,13 @@ def serve_file(filename):
     except FileNotFoundError:
         abort(404)
 
+@app.route('/list')
+def list_files():
+    try:
+        files = sorted(os.listdir(app.config['UPLOAD_FOLDER']))
+        return render_template('list.html', files=files)
+    except Exception as e:
+        return f"Error reading files: {e}", 500
+
 if __name__ == '__main__':
     app.run(debug=True)
