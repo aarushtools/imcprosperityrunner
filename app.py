@@ -4,7 +4,7 @@ import subprocess
 import tempfile
 import urllib
 import requests
-from flask import Flask, request, render_template, send_file, abort, send_from_directory
+from flask import Flask, request, render_template, send_file, abort, send_from_directory, session, redirect, url_for
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
@@ -12,6 +12,8 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "https://jmerle.github.io"}})
 
 app.config['UPLOAD_FOLDER'] = "uploads"
+app.secret_key = os.environ.get('SECRET_KEY', 'dev-key')  # Change in production
+PASSWORD = os.environ.get('PASSWORD')
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -79,13 +81,20 @@ def serve_file(filename):
     except FileNotFoundError:
         abort(404)
 
-@app.route('/list')
+@app.route('/list', methods=['GET', 'POST'])
 def list_files():
-    try:
-        files = sorted(os.listdir(app.config['UPLOAD_FOLDER']))
-        return render_template('list.html', files=files)
-    except Exception as e:
-        return f"Error reading files: {e}", 500
+    if session.get('authenticated') != True:
+        if request.method == 'POST':
+            if request.form.get('password') == PASSWORD:
+                session['authenticated'] = True
+                return redirect(url_for('list_files'))
+            else:
+                return render_template('login.html', error="Wrong password")
+        return render_template('login.html')
+
+    files = sorted(os.listdir(app.config['UPLOAD_FOLDER']))
+    return render_template('list.html', files=files)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
