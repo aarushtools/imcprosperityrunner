@@ -53,6 +53,18 @@ def upload_file():
             if "ValueError: invalid literal for int() with base 10: ''" in result.stderr:
                 show_tip1 = True
 
+            uploads = sorted(
+                (os.path.join(app.config['UPLOAD_FOLDER'], f) for f in os.listdir(app.config['UPLOAD_FOLDER'])),
+                key=os.path.getmtime,
+                reverse=True
+            )
+
+            for old_file in uploads[5:]:
+                try:
+                    os.remove(old_file)
+                except Exception as e:
+                    print(f"Failed to delete {old_file}: {e}")
+
             return render_template('upload.html', success=True, data=result.stdout, errors=result.stderr,
                                    prosperity_url=prosperity_url, show_tip1=show_tip1)
 
